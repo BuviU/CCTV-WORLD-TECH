@@ -410,6 +410,91 @@
   .cat-link svg{width:12px;height:12px;transition:transform .2s ease;}
   .cat-card:hover .cat-link svg{transform:translateX(3px);}
 
+  /* ---------------- featured products section ---------------- */
+  .product-grid{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:24px;
+  }
+  .product-card{
+    background:linear-gradient(155deg, var(--panel-2), var(--panel));
+    border:1px solid var(--line);
+    border-radius:16px;
+    overflow:hidden;
+    display:flex;
+    flex-direction:column;
+    transition:border-color .3s ease, box-shadow .3s ease;
+  }
+  .product-card:hover{
+    border-color:rgba(67,217,255,0.35);
+    box-shadow:0 20px 40px -20px rgba(0,0,0,0.8);
+  }
+  .product-img-wrap{
+    position:relative;
+    width:100%;
+    height:280px;
+    background:#070C16;
+    overflow:hidden;
+  }
+  .product-img-wrap img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    transition:transform .5s ease;
+  }
+  .product-card:hover .product-img-wrap img{
+    transform:scale(1.05);
+  }
+  .product-badge{
+    position:absolute;
+    top:12px;
+    right:12px;
+    background:rgba(6,9,16,0.85);
+    border:1px solid var(--cyan-dim);
+    color:var(--cyan);
+    font-family:var(--font-mono);
+    font-size:10px;
+    font-weight:600;
+    padding:4px 10px;
+    border-radius:20px;
+    backdrop-filter:blur(8px);
+  }
+  .product-body{
+    padding:24px;
+    display:flex;
+    flex-direction:column;
+    flex-grow:1;
+  }
+  .product-brand{
+    font-family:var(--font-mono);
+    font-size:11px;
+    color:var(--cyan);
+    letter-spacing:0.08em;
+    margin-bottom:6px;
+    text-transform:uppercase;
+  }
+  .product-title{
+    font-family:var(--font-display);
+    font-size:18px;
+    font-weight:600;
+    margin-bottom:10px;
+    color:var(--ink);
+  }
+  .product-desc{
+    font-size:13px;
+    color:var(--ink-dim);
+    line-height:1.6;
+    margin-bottom:20px;
+    flex-grow:1;
+  }
+  .product-footer{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding-top:16px;
+    border-top:1px solid var(--line);
+  }
+
   /* ---------------- stats band ---------------- */
   .stats-band{
     border-top:1px solid var(--line);
@@ -599,6 +684,7 @@
     .hero-inner{grid-template-columns:1fr;}
     .hero-stage{height:380px;margin-top:40px;order:-1;}
     .cat-grid{grid-template-columns:1fr 1fr;}
+    .product-grid{grid-template-columns:1fr 1fr;}
     .sector-grid{grid-template-columns:1fr 1fr;}
     .stats-grid{grid-template-columns:1fr 1fr;}
     .stat-cell:nth-child(3){border-left:none;}
@@ -606,6 +692,7 @@
   }
   @media (max-width:620px){
     .cat-grid{grid-template-columns:1fr;}
+    .product-grid{grid-template-columns:1fr;}
     .sector-grid{grid-template-columns:1fr;}
     .stats-grid{grid-template-columns:1fr;}
     .stat-cell{border-left:none !important;border-top:1px solid var(--line);}
@@ -631,6 +718,7 @@
       </div>
     </div>
     <nav class="links">
+      <a href="#featured">Featured</a>
       <a href="#products">Products</a>
       <a href="#sectors">Solutions</a>
       <a href="#brands">Brands</a>
@@ -652,7 +740,7 @@
         <h1 class="hero-h">Engineered visibility<br>for <span class="accent">every space</span> you protect.</h1>
         <p class="hero-sub">From single dome cameras to islandwide, multi-site deployments — CCTV World Technology supplies Sri Lanka's system integrators and resellers with the surveillance, access control, and transmission hardware they build on.</p>
         <div class="hero-actions">
-          <a href="#products" class="btn btn-primary">Browse the catalogue</a>
+          <a href="#featured" class="btn btn-primary">View Featured Products</a>
           <a href="#contact" class="btn btn-ghost">Request a bulk quote</a>
         </div>
         <div class="hero-trust">
@@ -693,12 +781,74 @@
     <div class="wrap brand-strip-inner">
       <span class="brand-strip-label">AUTHORISED DISTRIBUTOR FOR</span>
       <div class="brand-logos">
+        <span>UNIARCH</span>
+        <span>HITECH POWER</span>
         <span>DAHUA</span>
         <span>TVT</span>
-        <span>+ GLOBAL PARTNER BRANDS</span>
       </div>
     </div>
   </div>
+
+  <!-- FEATURED PRODUCTS SECTION -->
+  <section id="featured">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <div class="eyebrow">FEATURED HARDWARE</div>
+        <h2 class="section-h">High-performance security essentials.</h2>
+        <p class="section-p">Top-tier surveillance hardware, power solutions, and network recording infrastructure ready for immediate dispatch.</p>
+      </div>
+
+      <div class="product-grid reveal">
+        <!-- Product 1 -->
+        <div class="product-card">
+          <div class="product-img-wrap">
+            <img src="756342274_1043288051425107_4235581923114589332_n.jpg" alt="Uniarch Smart Security Bullet Camera">
+            <span class="product-badge">2-YEAR WARRANTY</span>
+          </div>
+          <div class="product-body">
+            <span class="product-brand">Uniarch</span>
+            <h3 class="product-title">Smart Security Bullet Camera</h3>
+            <p class="product-desc">2MP Full HD 1080P resolution, Smart Dual Light, 40m IR Night Vision, Built-in Microphone, IP67 Waterproof rating, and 4-in-1 video output support.</p>
+            <div class="product-footer">
+              <a href="#contact" class="btn btn-primary btn-sm" style="width:100%;">Inquire Product</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Product 2 -->
+        <div class="product-card">
+          <div class="product-img-wrap">
+            <img src="725684445_1011822667904979_7191605599046423795_n.jpg" alt="Uniarch XVR-108F Network Video Recorder">
+            <span class="product-badge">AI ANALYTICS</span>
+          </div>
+          <div class="product-body">
+            <span class="product-brand">Uniarch</span>
+            <h3 class="product-title">XVR-108F Network Video Recorder</h3>
+            <p class="product-desc">Advanced surveillance recording unit featuring built-in AI Object Detection & Tracking, Face Match analytics, and multi-channel high-throughput storage.</p>
+            <div class="product-footer">
+              <a href="#contact" class="btn btn-primary btn-sm" style="width:100%;">Inquire Product</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Product 3 -->
+        <div class="product-card">
+          <div class="product-img-wrap">
+            <img src="729737131_1015123794241533_1338456226869869391_n.jpg" alt="Hitech Power CCTV Power Supply">
+            <span class="product-badge">SURGE PROTECTED</span>
+          </div>
+          <div class="product-body">
+            <span class="product-brand">Hitech Power</span>
+            <h3 class="product-title">CCTV Power Supply DC12V-2A</h3>
+            <p class="product-desc">High-grade regulated power supply with built-in surge protection, smart components, and heavy-duty casing engineered for continuous usage.</p>
+            <div class="product-footer">
+              <a href="#contact" class="btn btn-primary btn-sm" style="width:100%;">Inquire Product</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
 
   <section id="products">
     <div class="wrap">
