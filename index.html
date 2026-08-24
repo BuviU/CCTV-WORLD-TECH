@@ -1,0 +1,1086 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CCTV World Technology — Engineered Visibility</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --void:#060910;
+    --void-2:#0A0F1C;
+    --panel:#0D1526;
+    --panel-2:#111B30;
+    --line:rgba(255,255,255,0.09);
+    --line-strong:rgba(255,255,255,0.16);
+    --ink:#EAF1FB;
+    --ink-dim:#8A93A8;
+    --ink-faint:#5B6578;
+    --cyan:#43D9FF;
+    --cyan-dim:#1B4E5E;
+    --amber:#FFB13D;
+    --font-display:'Sora',sans-serif;
+    --font-body:'Inter',sans-serif;
+    --font-mono:'JetBrains Mono',monospace;
+  }
+
+  *{margin:0;padding:0;box-sizing:border-box;}
+
+  html{scroll-behavior:smooth;}
+
+  body{
+    background:var(--void);
+    color:var(--ink);
+    font-family:var(--font-body);
+    overflow-x:hidden;
+    line-height:1.5;
+  }
+
+  ::selection{background:var(--cyan);color:var(--void);}
+
+  a{color:inherit;text-decoration:none;}
+
+  .wrap{
+    max-width:1280px;
+    margin:0 auto;
+    padding:0 48px;
+  }
+
+  /* ---------------- background texture layers ---------------- */
+  .bg-grid{
+    position:fixed;
+    inset:0;
+    z-index:0;
+    background-image:
+      linear-gradient(rgba(67,217,255,0.045) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(67,217,255,0.045) 1px, transparent 1px);
+    background-size:64px 64px;
+    -webkit-mask-image:radial-gradient(ellipse 80% 60% at 50% 0%, black 0%, transparent 70%);
+    mask-image:radial-gradient(ellipse 80% 60% at 50% 0%, black 0%, transparent 70%);
+    pointer-events:none;
+  }
+
+  /* ---------------- nav ---------------- */
+  header.nav{
+    position:fixed;
+    top:0;left:0;right:0;
+    z-index:100;
+    backdrop-filter:blur(16px) saturate(140%);
+    -webkit-backdrop-filter:blur(16px) saturate(140%);
+    background:rgba(6,9,16,0.72);
+    border-bottom:1px solid var(--line);
+  }
+  .nav-inner{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    height:76px;
+  }
+  .logo{
+    display:flex;
+    align-items:center;
+    gap:11px;
+    font-family:var(--font-display);
+    font-weight:700;
+    font-size:16.5px;
+    letter-spacing:0.01em;
+  }
+  .logo-mark{
+    width:34px;height:34px;
+    border-radius:9px;
+    background:linear-gradient(150deg,#132238,#0A121F);
+    border:1px solid var(--line-strong);
+    display:flex;align-items:center;justify-content:center;
+    position:relative;
+  }
+  .logo-mark::after{
+    content:'';
+    width:9px;height:9px;
+    border-radius:50%;
+    background:var(--cyan);
+    box-shadow:0 0 10px 2px rgba(67,217,255,0.8);
+  }
+  .logo-sub{
+    display:block;
+    font-family:var(--font-mono);
+    font-weight:400;
+    font-size:9.5px;
+    letter-spacing:0.16em;
+    color:var(--ink-faint);
+    margin-top:2px;
+  }
+  nav.links{
+    display:flex;
+    gap:40px;
+  }
+  nav.links a{
+    font-size:13.5px;
+    font-weight:500;
+    color:var(--ink-dim);
+    letter-spacing:0.01em;
+    transition:color .2s ease;
+    position:relative;
+  }
+  nav.links a:hover{color:var(--ink);}
+  .nav-cta{
+    display:flex;
+    align-items:center;
+    gap:20px;
+  }
+  .btn{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    gap:8px;
+    font-family:var(--font-body);
+    font-weight:600;
+    font-size:13.5px;
+    padding:12px 22px;
+    border-radius:8px;
+    cursor:pointer;
+    border:1px solid transparent;
+    transition:transform .2s ease, box-shadow .2s ease, background .2s ease, border-color .2s ease;
+    white-space:nowrap;
+  }
+  .btn-primary{
+    background:linear-gradient(135deg,#4EE3FF,#1C9FCE);
+    color:#04141C;
+    box-shadow:0 1px 0 rgba(255,255,255,0.4) inset, 0 8px 24px -8px rgba(67,217,255,0.55);
+  }
+  .btn-primary:hover{transform:translateY(-2px);box-shadow:0 1px 0 rgba(255,255,255,0.4) inset, 0 14px 28px -8px rgba(67,217,255,0.7);}
+  .btn-ghost{
+    background:rgba(255,255,255,0.03);
+    border-color:var(--line-strong);
+    color:var(--ink);
+  }
+  .btn-ghost:hover{background:rgba(255,255,255,0.07);border-color:rgba(255,255,255,0.3);}
+  .btn-sm{padding:9px 16px;font-size:12.5px;}
+
+  .nav-toggle{display:none;}
+
+  /* ---------------- hero ---------------- */
+  .hero{
+    position:relative;
+    padding:172px 0 96px;
+    z-index:1;
+    overflow:hidden;
+  }
+  .hero-inner{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:20px;
+    align-items:center;
+  }
+  .eyebrow{
+    display:inline-flex;
+    align-items:center;
+    gap:9px;
+    font-family:var(--font-mono);
+    font-size:11px;
+    letter-spacing:0.14em;
+    color:var(--cyan);
+    background:rgba(67,217,255,0.08);
+    border:1px solid rgba(67,217,255,0.25);
+    padding:7px 14px;
+    border-radius:100px;
+    margin-bottom:28px;
+  }
+  .eyebrow::before{
+    content:'';
+    width:6px;height:6px;
+    border-radius:50%;
+    background:var(--cyan);
+    box-shadow:0 0 8px 2px rgba(67,217,255,0.9);
+    animation:pulse 2s ease-in-out infinite;
+  }
+  @keyframes pulse{
+    0%,100%{opacity:1;}
+    50%{opacity:0.35;}
+  }
+  h1.hero-h{
+    font-family:var(--font-display);
+    font-weight:700;
+    font-size:clamp(38px,4.6vw,60px);
+    line-height:1.06;
+    letter-spacing:-0.02em;
+    margin-bottom:26px;
+  }
+  h1.hero-h .accent{
+    background:linear-gradient(100deg,#43D9FF,#8FE9FF 45%,#43D9FF);
+    -webkit-background-clip:text;
+    background-clip:text;
+    color:transparent;
+  }
+  .hero-sub{
+    font-size:16.5px;
+    line-height:1.7;
+    color:var(--ink-dim);
+    max-width:490px;
+    margin-bottom:38px;
+  }
+  .hero-actions{
+    display:flex;
+    gap:16px;
+    margin-bottom:52px;
+  }
+  .hero-trust{
+    display:flex;
+    gap:36px;
+    padding-top:28px;
+    border-top:1px solid var(--line);
+  }
+  .trust-item .num{
+    font-family:var(--font-mono);
+    font-size:22px;
+    font-weight:600;
+    color:var(--ink);
+    display:block;
+  }
+  .trust-item .num span{color:var(--cyan);}
+  .trust-item .label{
+    font-size:11.5px;
+    color:var(--ink-faint);
+    margin-top:4px;
+    letter-spacing:0.02em;
+  }
+
+  /* ---------------- hero 3D stage ---------------- */
+  .hero-stage{
+    position:relative;
+    height:560px;
+  }
+  #camera-canvas{
+    position:absolute;
+    inset:0;
+    width:100%;
+    height:100%;
+  }
+  .float-card{
+    position:absolute;
+    background:rgba(13,21,38,0.72);
+    backdrop-filter:blur(18px) saturate(160%);
+    -webkit-backdrop-filter:blur(18px) saturate(160%);
+    border:1px solid var(--line-strong);
+    border-radius:14px;
+    padding:16px 18px;
+    box-shadow:0 20px 50px -20px rgba(0,0,0,0.7), 0 1px 0 rgba(255,255,255,0.06) inset;
+    transform-style:preserve-3d;
+    will-change:transform;
+    pointer-events:auto;
+  }
+  .float-card .fc-top{
+    display:flex;
+    align-items:center;
+    gap:9px;
+    margin-bottom:9px;
+  }
+  .fc-dot{width:7px;height:7px;border-radius:50%;background:var(--cyan);box-shadow:0 0 8px 1px rgba(67,217,255,0.8);}
+  .fc-label{font-family:var(--font-mono);font-size:10px;letter-spacing:0.08em;color:var(--ink-faint);}
+  .fc-value{font-family:var(--font-display);font-size:19px;font-weight:600;color:var(--ink);}
+  .fc-1{top:6%;left:0%;}
+  .fc-2{top:38%;right:-2%;}
+  .fc-3{bottom:10%;left:10%;}
+
+  /* ---------------- section shared ---------------- */
+  section{position:relative;z-index:1;padding:120px 0;}
+  .section-head{
+    max-width:640px;
+    margin-bottom:56px;
+  }
+  .section-head .eyebrow{margin-bottom:18px;}
+  h2.section-h{
+    font-family:var(--font-display);
+    font-weight:700;
+    font-size:clamp(28px,3vw,38px);
+    letter-spacing:-0.015em;
+    line-height:1.15;
+    margin-bottom:16px;
+  }
+  .section-p{
+    color:var(--ink-dim);
+    font-size:15.5px;
+    line-height:1.7;
+  }
+
+  /* ---------------- brand strip ---------------- */
+  .brand-strip{
+    padding:44px 0;
+    border-top:1px solid var(--line);
+    border-bottom:1px solid var(--line);
+    position:relative;
+    z-index:1;
+  }
+  .brand-strip-inner{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    flex-wrap:wrap;
+    gap:28px;
+  }
+  .brand-strip-label{
+    font-family:var(--font-mono);
+    font-size:11px;
+    letter-spacing:0.12em;
+    color:var(--ink-faint);
+    white-space:nowrap;
+  }
+  .brand-logos{
+    display:flex;
+    gap:44px;
+    flex-wrap:wrap;
+    align-items:center;
+  }
+  .brand-logos span{
+    font-family:var(--font-display);
+    font-weight:700;
+    font-size:17px;
+    letter-spacing:0.03em;
+    color:var(--ink-faint);
+    transition:color .25s ease;
+  }
+  .brand-logos span:hover{color:var(--ink);}
+
+  /* ---------------- perspective grid for tilt cards ---------------- */
+  .tilt-field{perspective:1400px;}
+
+  .cat-grid{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:20px;
+  }
+  .cat-card{
+    position:relative;
+    background:linear-gradient(155deg, var(--panel-2), var(--panel));
+    border:1px solid var(--line);
+    border-radius:16px;
+    padding:30px 26px;
+    transform-style:preserve-3d;
+    will-change:transform;
+    transition:border-color .3s ease, box-shadow .3s ease;
+    overflow:hidden;
+  }
+  .cat-card::before{
+    content:'';
+    position:absolute;
+    top:-40%;left:-20%;
+    width:70%;height:140%;
+    background:radial-gradient(circle, rgba(67,217,255,0.10), transparent 70%);
+    opacity:0;
+    transition:opacity .35s ease;
+    pointer-events:none;
+  }
+  .cat-card:hover{border-color:rgba(67,217,255,0.35);box-shadow:0 30px 60px -30px rgba(0,0,0,0.8);}
+  .cat-card:hover::before{opacity:1;}
+  .cat-icon{
+    width:46px;height:46px;
+    border-radius:11px;
+    background:rgba(67,217,255,0.09);
+    border:1px solid rgba(67,217,255,0.22);
+    display:flex;align-items:center;justify-content:center;
+    margin-bottom:22px;
+    transform:translateZ(30px);
+  }
+  .cat-icon svg{width:22px;height:22px;stroke:var(--cyan);}
+  .cat-card h3{
+    font-family:var(--font-display);
+    font-size:18px;
+    font-weight:600;
+    margin-bottom:9px;
+    transform:translateZ(20px);
+  }
+  .cat-card p{
+    font-size:13.5px;
+    color:var(--ink-dim);
+    line-height:1.65;
+    margin-bottom:18px;
+    transform:translateZ(15px);
+  }
+  .cat-link{
+    font-family:var(--font-mono);
+    font-size:11.5px;
+    color:var(--cyan);
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+    letter-spacing:0.03em;
+    transform:translateZ(15px);
+  }
+  .cat-link svg{width:12px;height:12px;transition:transform .2s ease;}
+  .cat-card:hover .cat-link svg{transform:translateX(3px);}
+
+  /* ---------------- stats band ---------------- */
+  .stats-band{
+    border-top:1px solid var(--line);
+    border-bottom:1px solid var(--line);
+    background:
+      radial-gradient(ellipse 60% 100% at 50% 0%, rgba(67,217,255,0.05), transparent 70%),
+      var(--void-2);
+  }
+  .stats-grid{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+  }
+  .stat-cell{
+    padding:56px 32px;
+    border-left:1px solid var(--line);
+    text-align:left;
+  }
+  .stat-cell:first-child{border-left:none;}
+  .stat-num{
+    font-family:var(--font-mono);
+    font-size:40px;
+    font-weight:600;
+    color:var(--ink);
+    letter-spacing:-0.01em;
+  }
+  .stat-num span{color:var(--cyan);}
+  .stat-label{
+    font-size:13px;
+    color:var(--ink-dim);
+    margin-top:10px;
+    max-width:180px;
+  }
+
+  /* ---------------- sectors ---------------- */
+  .sector-grid{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:18px;
+  }
+  .sector-card{
+    position:relative;
+    padding:26px 24px;
+    border-radius:14px;
+    border:1px solid var(--line);
+    background:var(--panel);
+    display:flex;
+    flex-direction:column;
+    gap:14px;
+    transform-style:preserve-3d;
+    will-change:transform;
+    transition:border-color .3s ease;
+  }
+  .sector-card:hover{border-color:rgba(67,217,255,0.3);}
+  .sector-num{
+    font-family:var(--font-mono);
+    font-size:11px;
+    color:var(--ink-faint);
+    letter-spacing:0.06em;
+  }
+  .sector-card h4{
+    font-family:var(--font-display);
+    font-size:16px;
+    font-weight:600;
+  }
+  .sector-card p{
+    font-size:13px;
+    color:var(--ink-dim);
+    line-height:1.6;
+  }
+
+  /* ---------------- cta banner ---------------- */
+  .cta-banner{
+    position:relative;
+    border-radius:24px;
+    border:1px solid var(--line-strong);
+    padding:76px 64px;
+    text-align:center;
+    overflow:hidden;
+    background:
+      radial-gradient(ellipse 70% 140% at 50% 120%, rgba(67,217,255,0.16), transparent 60%),
+      linear-gradient(160deg,#0E1830,#080C16);
+  }
+  .cta-banner::before{
+    content:'';
+    position:absolute;
+    inset:0;
+    background-image:
+      linear-gradient(rgba(67,217,255,0.06) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(67,217,255,0.06) 1px, transparent 1px);
+    background-size:40px 40px;
+    -webkit-mask-image:radial-gradient(ellipse 60% 100% at 50% 100%, black 0%, transparent 75%);
+    mask-image:radial-gradient(ellipse 60% 100% at 50% 100%, black 0%, transparent 75%);
+  }
+  .cta-banner h2{
+    font-family:var(--font-display);
+    font-weight:700;
+    font-size:clamp(26px,3.4vw,40px);
+    letter-spacing:-0.015em;
+    margin-bottom:16px;
+    position:relative;
+  }
+  .cta-banner p{
+    color:var(--ink-dim);
+    font-size:15.5px;
+    max-width:480px;
+    margin:0 auto 34px;
+    position:relative;
+  }
+  .cta-actions{
+    display:flex;
+    gap:16px;
+    justify-content:center;
+    position:relative;
+  }
+
+  /* ---------------- footer ---------------- */
+  footer{
+    border-top:1px solid var(--line);
+    padding:64px 0 32px;
+    position:relative;
+    z-index:1;
+  }
+  .footer-grid{
+    display:grid;
+    grid-template-columns:1.6fr repeat(3,1fr);
+    gap:40px;
+    padding-bottom:48px;
+  }
+  .footer-brand p{
+    color:var(--ink-dim);
+    font-size:13.5px;
+    line-height:1.7;
+    margin-top:16px;
+    max-width:280px;
+  }
+  .footer-col h5{
+    font-family:var(--font-mono);
+    font-size:11px;
+    letter-spacing:0.1em;
+    color:var(--ink-faint);
+    margin-bottom:18px;
+  }
+  .footer-col a{
+    display:block;
+    font-size:13.5px;
+    color:var(--ink-dim);
+    margin-bottom:12px;
+    transition:color .2s ease;
+  }
+  .footer-col a:hover{color:var(--cyan);}
+  .footer-bottom{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding-top:28px;
+    border-top:1px solid var(--line);
+    flex-wrap:wrap;
+    gap:14px;
+  }
+  .footer-bottom p{
+    font-size:12px;
+    color:var(--ink-faint);
+    font-family:var(--font-mono);
+  }
+  .footer-socials{display:flex;gap:12px;}
+  .footer-socials a{
+    width:34px;height:34px;
+    border-radius:8px;
+    border:1px solid var(--line);
+    display:flex;align-items:center;justify-content:center;
+  }
+  .footer-socials a:hover{border-color:var(--cyan);}
+  .footer-socials svg{width:15px;height:15px;stroke:var(--ink-dim);}
+
+  /* ---------------- reveal on scroll ---------------- */
+  .reveal{
+    opacity:0;
+    transform:translateY(28px);
+    transition:opacity .7s cubic-bezier(.2,.7,.3,1), transform .7s cubic-bezier(.2,.7,.3,1);
+  }
+  .reveal.in{opacity:1;transform:translateY(0);}
+
+  /* ---------------- responsive ---------------- */
+  @media (max-width:980px){
+    .wrap{padding:0 24px;}
+    nav.links{display:none;}
+    .hero-inner{grid-template-columns:1fr;}
+    .hero-stage{height:380px;margin-top:40px;order:-1;}
+    .cat-grid{grid-template-columns:1fr 1fr;}
+    .sector-grid{grid-template-columns:1fr 1fr;}
+    .stats-grid{grid-template-columns:1fr 1fr;}
+    .stat-cell:nth-child(3){border-left:none;}
+    .footer-grid{grid-template-columns:1fr 1fr;}
+  }
+  @media (max-width:620px){
+    .cat-grid{grid-template-columns:1fr;}
+    .sector-grid{grid-template-columns:1fr;}
+    .stats-grid{grid-template-columns:1fr;}
+    .stat-cell{border-left:none !important;border-top:1px solid var(--line);}
+    .stat-cell:first-child{border-top:none;}
+    .footer-grid{grid-template-columns:1fr;}
+    .hero-actions{flex-direction:column;}
+    .btn{width:100%;}
+    .cta-actions{flex-direction:column;}
+  }
+</style>
+</head>
+<body>
+
+<div class="bg-grid"></div>
+
+<header class="nav">
+  <div class="wrap nav-inner">
+    <div class="logo">
+      <div class="logo-mark"></div>
+      <div>
+        CCTV WORLD TECH
+        <span class="logo-sub">SECURITY DISTRIBUTOR · EST. 2007</span>
+      </div>
+    </div>
+    <nav class="links">
+      <a href="#products">Products</a>
+      <a href="#sectors">Solutions</a>
+      <a href="#brands">Brands</a>
+      <a href="#contact">Contact</a>
+    </nav>
+    <div class="nav-cta">
+      <a href="#" class="btn btn-ghost btn-sm">Dealer login</a>
+      <a href="#contact" class="btn btn-primary btn-sm">Request a quote</a>
+    </div>
+  </div>
+</header>
+
+<main>
+
+  <section class="hero">
+    <div class="wrap hero-inner">
+      <div>
+        <div class="eyebrow">SRI LANKA'S SECURITY TECH DISTRIBUTOR SINCE 2007</div>
+        <h1 class="hero-h">Engineered visibility<br>for <span class="accent">every space</span> you protect.</h1>
+        <p class="hero-sub">From single dome cameras to islandwide, multi-site deployments — CCTV World Technology supplies Sri Lanka's system integrators and resellers with the surveillance, access control, and transmission hardware they build on.</p>
+        <div class="hero-actions">
+          <a href="#products" class="btn btn-primary">Browse the catalogue</a>
+          <a href="#contact" class="btn btn-ghost">Request a bulk quote</a>
+        </div>
+        <div class="hero-trust">
+          <div class="trust-item">
+            <span class="num"><span>19</span> yrs</span>
+            <span class="label">Distributing since 2007</span>
+          </div>
+          <div class="trust-item">
+            <span class="num"><span>10+</span></span>
+            <span class="label">Global brands carried</span>
+          </div>
+          <div class="trust-item">
+            <span class="num"><span>1,000+</span></span>
+            <span class="label">Installations islandwide</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="hero-stage">
+        <canvas id="camera-canvas"></canvas>
+        <div class="float-card fc-1" id="fc1">
+          <div class="fc-top"><span class="fc-dot"></span><span class="fc-label">LIVE STATUS</span></div>
+          <div class="fc-value">24/7 monitoring</div>
+        </div>
+        <div class="float-card fc-2" id="fc2">
+          <div class="fc-top"><span class="fc-dot"></span><span class="fc-label">RESOLUTION</span></div>
+          <div class="fc-value">Up to 4K UHD</div>
+        </div>
+        <div class="float-card fc-3" id="fc3">
+          <div class="fc-top"><span class="fc-dot"></span><span class="fc-label">DETECTION</span></div>
+          <div class="fc-value">AI-powered analytics</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="brand-strip">
+    <div class="wrap brand-strip-inner">
+      <span class="brand-strip-label">AUTHORISED DISTRIBUTOR FOR</span>
+      <div class="brand-logos">
+        <span>DAHUA</span>
+        <span>TVT</span>
+        <span>+ GLOBAL PARTNER BRANDS</span>
+      </div>
+    </div>
+  </div>
+
+  <section id="products">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <div class="eyebrow">FULL CATALOGUE</div>
+        <h2 class="section-h">One distributor. Every category you need to spec a job.</h2>
+        <p class="section-p">Cameras, recorders, access control, and the transmission gear that ties it all together — sourced, stocked, and ready to move.</p>
+      </div>
+
+      <div class="cat-grid tilt-field reveal">
+        <div class="cat-card tilt-card">
+          <div class="cat-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M23 7l-7 5 7 5V7z"/><rect x="1" y="5" width="15" height="14" rx="2"/></svg></div>
+          <h3>IP & HD cameras</h3>
+          <p>Dome, bullet, PTZ and thermal — analog HDCVI through full network IP, with low-light and AI variants.</p>
+          <a href="#" class="cat-link">View range <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+        </div>
+        <div class="cat-card tilt-card">
+          <div class="cat-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg></div>
+          <h3>NVR & DVR recorders</h3>
+          <p>Network and hybrid recorders across channel counts, built for continuous, high-throughput storage.</p>
+          <a href="#" class="cat-link">View range <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+        </div>
+        <div class="cat-card tilt-card">
+          <div class="cat-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M18 11a6 6 0 10-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 01-3.46 0"/></svg></div>
+          <h3>Access & intercom</h3>
+          <p>Time attendance, access control systems, and 2-wire / 4-wire video intercom for gated and multi-unit sites.</p>
+          <a href="#" class="cat-link">View range <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+        </div>
+        <div class="cat-card tilt-card">
+          <div class="cat-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg></div>
+          <h3>Transmission & PoE</h3>
+          <p>Fiber, network cable, PoE and ePoE switches, plus the panels and cassettes to terminate a clean install.</p>
+          <a href="#" class="cat-link">View range <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+        </div>
+        <div class="cat-card tilt-card">
+          <div class="cat-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="2" width="16" height="20" rx="2"/><path d="M8 10h8M8 14h5"/></svg></div>
+          <h3>Storage & NAND</h3>
+          <p>Surveillance-rated hard disks, SSDs and memory cards, sized for continuous-record workloads.</p>
+          <a href="#" class="cat-link">View range <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+        </div>
+        <div class="cat-card tilt-card">
+          <div class="cat-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="12" rx="2"/><path d="M8 21h8M12 16v5"/></svg></div>
+          <h3>Monitors & displays</h3>
+          <p>Control-room and analog indoor monitors matched to your recorder outputs and viewing distance.</p>
+          <a href="#" class="cat-link">View range <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="stats-band">
+    <div class="wrap">
+      <div class="stats-grid">
+        <div class="stat-cell reveal">
+          <div class="stat-num"><span>19</span></div>
+          <div class="stat-label">Years supplying Sri Lanka's security trade</div>
+        </div>
+        <div class="stat-cell reveal">
+          <div class="stat-num"><span>281</span></div>
+          <div class="stat-label">Brands and product lines stocked</div>
+        </div>
+        <div class="stat-cell reveal">
+          <div class="stat-num"><span>500+</span></div>
+          <div class="stat-label">System integrators and resellers served</div>
+        </div>
+        <div class="stat-cell reveal">
+          <div class="stat-num"><span>24/7</span></div>
+          <div class="stat-label">Order support for active installations</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <section id="sectors">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <div class="eyebrow">SOLUTIONS BY SECTOR</div>
+        <h2 class="section-h">Specified for the site, not just the shelf.</h2>
+        <p class="section-p">Every sector has different coverage, compliance, and uptime demands. We help integrators spec the right hardware the first time.</p>
+      </div>
+      <div class="sector-grid tilt-field reveal">
+        <div class="sector-card tilt-card">
+          <span class="sector-num">RETAIL</span>
+          <h4>Retail & retail chains</h4>
+          <p>Loss-prevention coverage, POS overlay, and multi-branch remote viewing.</p>
+        </div>
+        <div class="sector-card tilt-card">
+          <span class="sector-num">HOSPITALITY</span>
+          <h4>Hotels & hospitality</h4>
+          <p>Discreet perimeter and lobby coverage paired with guest-facing access control.</p>
+        </div>
+        <div class="sector-card tilt-card">
+          <span class="sector-num">INDUSTRIAL</span>
+          <h4>Industrial & warehousing</h4>
+          <p>Wide-area thermal and PTZ coverage built for low light and long throw distances.</p>
+        </div>
+        <div class="sector-card tilt-card">
+          <span class="sector-num">RESIDENTIAL</span>
+          <h4>Housing schemes</h4>
+          <p>Gated-community intercom, access control, and shared CCTV infrastructure.</p>
+        </div>
+        <div class="sector-card tilt-card">
+          <span class="sector-num">BANKING</span>
+          <h4>Banking & finance</h4>
+          <p>Compliance-grade recording retention with vault and ATM-specific hardware.</p>
+        </div>
+        <div class="sector-card tilt-card">
+          <span class="sector-num">GOVERNMENT</span>
+          <h4>Government & public infra</h4>
+          <p>Large-scale, multi-site deployments with centralised monitoring architecture.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="contact">
+    <div class="wrap">
+      <div class="cta-banner reveal">
+        <h2>Speccing a project? Let's get you a quote.</h2>
+        <p>Tell us the site, the scope, and the brands you're working with — our team will put together a bulk quote within one working day.</p>
+        <div class="cta-actions">
+          <a href="#" class="btn btn-primary">Request a bulk quote</a>
+          <a href="#" class="btn btn-ghost">Chat on WhatsApp</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <div class="logo">
+          <div class="logo-mark"></div>
+          <div>CCTV WORLD TECH<span class="logo-sub">SECURITY DISTRIBUTOR · EST. 2007</span></div>
+        </div>
+        <p>148 Messenger Street, Colombo 12, Sri Lanka. Distributing surveillance, access control, and transmission technology to Sri Lanka's system integrators since 2007.</p>
+      </div>
+      <div class="footer-col">
+        <h5>PRODUCTS</h5>
+        <a href="#">IP & HD cameras</a>
+        <a href="#">NVR & DVR recorders</a>
+        <a href="#">Access & intercom</a>
+        <a href="#">Transmission & PoE</a>
+      </div>
+      <div class="footer-col">
+        <h5>COMPANY</h5>
+        <a href="#">About us</a>
+        <a href="#">Our brands</a>
+        <a href="#">Become a reseller</a>
+        <a href="#">Contact</a>
+      </div>
+      <div class="footer-col">
+        <h5>CONTACT</h5>
+        <a href="#">+94 11 244 5338</a>
+        <a href="#">info@cctvworldtech.lk</a>
+        <a href="#">Colombo 12, Sri Lanka</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2026 CCTV WORLD TECHNOLOGY. ALL RIGHTS RESERVED.</p>
+      <div class="footer-socials">
+        <a href="#" aria-label="Facebook"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"/></svg></a>
+        <a href="#" aria-label="WhatsApp"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 21l1.65-4.95A9 9 0 1112 21H3z"/></svg></a>
+        <a href="#" aria-label="LinkedIn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/><path d="M10 9v12M10 13a4 4 0 018 0v8"/></svg></a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+  (function(){
+    var canvas = document.getElementById('camera-canvas');
+    var stage = document.querySelector('.hero-stage');
+    if(!canvas || !window.THREE) return;
+
+    var scene = new THREE.Scene();
+    scene.fog = new THREE.FogExp2(0x060910, 0.05);
+
+    var camera = new THREE.PerspectiveCamera(42, stage.clientWidth/stage.clientHeight, 0.1, 100);
+    camera.position.set(0.6, 1.35, 5.2);
+    camera.lookAt(0, 0.3, 0);
+
+    var renderer = new THREE.WebGLRenderer({canvas:canvas, alpha:true, antialias:true});
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio,2));
+    renderer.setSize(stage.clientWidth, stage.clientHeight);
+
+    var ambient = new THREE.AmbientLight(0x3a5468, 1.1);
+    scene.add(ambient);
+    var key = new THREE.PointLight(0x43d9ff, 3.4, 12);
+    key.position.set(2, 3, 3);
+    scene.add(key);
+    var rim = new THREE.PointLight(0xffb13d, 0.9, 10);
+    rim.position.set(-3, 1, -2);
+    scene.add(rim);
+    var fill = new THREE.PointLight(0x1c9fce, 1.2, 10);
+    fill.position.set(-1, -1, 3);
+    scene.add(fill);
+
+    var cameraGroup = new THREE.Group();
+    scene.add(cameraGroup);
+
+    var metal = new THREE.MeshStandardMaterial({color:0x16233a, metalness:0.75, roughness:0.32});
+    var metalLight = new THREE.MeshStandardMaterial({color:0x22314c, metalness:0.7, roughness:0.35});
+
+    var mount = new THREE.Mesh(new THREE.CylinderGeometry(0.05,0.08,0.9,16), metal);
+    mount.position.set(0,1.05,-0.3);
+    mount.rotation.x = 0.35;
+    cameraGroup.add(mount);
+
+    var plate = new THREE.Mesh(new THREE.CylinderGeometry(0.22,0.22,0.08,24), metalLight);
+    plate.position.set(0,1.55,-0.55);
+    cameraGroup.add(plate);
+
+    var body = new THREE.Mesh(new THREE.CylinderGeometry(0.46,0.5,0.34,32), metal);
+    body.position.set(0,0.9,0);
+    cameraGroup.add(body);
+
+    var domeMat = new THREE.MeshPhysicalMaterial({
+      color:0x1c2a42, transparent:true, opacity:0.42,
+      roughness:0.08, metalness:0.15, clearcoat:1, clearcoatRoughness:0.1
+    });
+    var dome = new THREE.Mesh(new THREE.SphereGeometry(0.5,32,32,0,Math.PI*2,0,Math.PI/1.7), domeMat);
+    dome.position.set(0,0.72,0);
+    dome.rotation.x = Math.PI;
+    cameraGroup.add(dome);
+
+    var lensMat = new THREE.MeshStandardMaterial({color:0x030507, metalness:0.9, roughness:0.15});
+    var lens = new THREE.Mesh(new THREE.SphereGeometry(0.17,24,24), lensMat);
+    lens.position.set(0,0.58,0.02);
+    cameraGroup.add(lens);
+
+    var glowMat = new THREE.MeshStandardMaterial({color:0x000000, emissive:0x43d9ff, emissiveIntensity:2.4});
+    var glow = new THREE.Mesh(new THREE.SphereGeometry(0.07,16,16), glowMat);
+    glow.position.set(0,0.58,0.13);
+    cameraGroup.add(glow);
+
+    var ringMat = new THREE.MeshStandardMaterial({color:0x000000, emissive:0x43d9ff, emissiveIntensity:1.6});
+    var ring = new THREE.Mesh(new THREE.TorusGeometry(0.5,0.012,8,48), ringMat);
+    ring.position.set(0,0.9,0);
+    ring.rotation.x = Math.PI/2;
+    cameraGroup.add(ring);
+
+    cameraGroup.position.set(0,-0.35,0);
+    cameraGroup.scale.set(1.35,1.35,1.35);
+
+    function makeRadarTexture(){
+      var size = 512;
+      var c = document.createElement('canvas');
+      c.width = size; c.height = size;
+      var ctx = c.getContext('2d');
+      ctx.clearRect(0,0,size,size);
+      var cx = size/2, cy = size/2;
+      for(var r=size/2; r>0; r-=size/9){
+        ctx.beginPath();
+        ctx.arc(cx,cy,r,0,Math.PI*2);
+        ctx.strokeStyle = 'rgba(67,217,255,'+(0.18)+')';
+        ctx.lineWidth = 1;
+        ctx.stroke();
+      }
+      ctx.strokeStyle = 'rgba(67,217,255,0.14)';
+      ctx.beginPath(); ctx.moveTo(0,cy); ctx.lineTo(size,cy); ctx.stroke();
+      ctx.beginPath(); ctx.moveTo(cx,0); ctx.lineTo(cx,size); ctx.stroke();
+      return new THREE.CanvasTexture(c);
+    }
+    var radarTex = makeRadarTexture();
+    var radarMat = new THREE.MeshBasicMaterial({map:radarTex, transparent:true, opacity:0.55, blending:THREE.AdditiveBlending, depthWrite:false});
+    var radar = new THREE.Mesh(new THREE.CircleGeometry(2.4,64), radarMat);
+    radar.rotation.x = -Math.PI/2;
+    radar.position.y = -0.9;
+    scene.add(radar);
+
+    function makeSweepTexture(){
+      var size = 512;
+      var c = document.createElement('canvas');
+      c.width = size; c.height = size;
+      var ctx = c.getContext('2d');
+      var grad = ctx.createConicGradient ? ctx.createConicGradient(0, size/2, size/2) : null;
+      if(grad){
+        grad.addColorStop(0, 'rgba(67,217,255,0.55)');
+        grad.addColorStop(0.12, 'rgba(67,217,255,0.0)');
+        grad.addColorStop(1, 'rgba(67,217,255,0.0)');
+        ctx.fillStyle = grad;
+        ctx.fillRect(0,0,size,size);
+      }
+      return new THREE.CanvasTexture(c);
+    }
+    var sweepTex = makeSweepTexture();
+    var sweepMat = new THREE.MeshBasicMaterial({map:sweepTex, transparent:true, blending:THREE.AdditiveBlending, depthWrite:false});
+    var sweep = new THREE.Mesh(new THREE.CircleGeometry(2.4,64), sweepMat);
+    sweep.rotation.x = -Math.PI/2;
+    sweep.position.y = -0.895;
+    scene.add(sweep);
+
+    var starGeo = new THREE.BufferGeometry();
+    var starCount = 140;
+    var positions = new Float32Array(starCount*3);
+    for(var i=0;i<starCount;i++){
+      var r = 3 + Math.random()*3.5;
+      var theta = Math.random()*Math.PI*2;
+      var phi = Math.random()*Math.PI;
+      positions[i*3] = r*Math.sin(phi)*Math.cos(theta);
+      positions[i*3+1] = Math.random()*3.5 - 0.5;
+      positions[i*3+2] = r*Math.sin(phi)*Math.sin(theta) - 1;
+    }
+    starGeo.setAttribute('position', new THREE.BufferAttribute(positions,3));
+    var starMat = new THREE.PointsMaterial({color:0x43d9ff, size:0.02, transparent:true, opacity:0.5});
+    var stars = new THREE.Points(starGeo, starMat);
+    scene.add(stars);
+
+    var clock = new THREE.Clock();
+    function animate(){
+      requestAnimationFrame(animate);
+      var t = clock.getElapsedTime();
+      cameraGroup.rotation.y = t*0.28;
+      cameraGroup.position.y = -0.35 + Math.sin(t*0.9)*0.045;
+      sweep.rotation.z = t*0.6;
+      stars.rotation.y = t*0.02;
+      renderer.render(scene, camera);
+    }
+    animate();
+
+    function onResize(){
+      var w = stage.clientWidth, h = stage.clientHeight;
+      camera.aspect = w/h;
+      camera.updateProjectionMatrix();
+      renderer.setSize(w,h);
+    }
+    window.addEventListener('resize', onResize);
+  })();
+</script>
+
+<script>
+  (function(){
+    var cards = document.querySelectorAll('.tilt-card');
+    cards.forEach(function(card){
+      var rectCache;
+      card.addEventListener('mousemove', function(e){
+        rectCache = card.getBoundingClientRect();
+        var px = (e.clientX - rectCache.left) / rectCache.width;
+        var py = (e.clientY - rectCache.top) / rectCache.height;
+        var rx = (0.5 - py) * 10;
+        var ry = (px - 0.5) * 12;
+        card.style.transform = 'perspective(1000px) rotateX('+rx+'deg) rotateY('+ry+'deg) translateZ(6px)';
+      });
+      card.addEventListener('mouseleave', function(){
+        card.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) translateZ(0px)';
+      });
+    });
+
+    var floatCards = document.querySelectorAll('.float-card');
+    var stage = document.querySelector('.hero-stage');
+    if(stage){
+      stage.addEventListener('mousemove', function(e){
+        var r = stage.getBoundingClientRect();
+        var px = (e.clientX - r.left)/r.width - 0.5;
+        var py = (e.clientY - r.top)/r.height - 0.5;
+        floatCards.forEach(function(fc, i){
+          var depth = (i+1)*6;
+          fc.style.transform = 'perspective(900px) rotateX('+(-py*8)+'deg) rotateY('+(px*8)+'deg) translate3d('+(px*depth)+'px,'+(py*depth)+'px,0)';
+        });
+      });
+      stage.addEventListener('mouseleave', function(){
+        floatCards.forEach(function(fc){ fc.style.transform = 'translate3d(0,0,0)'; });
+      });
+    }
+
+    var revealEls = document.querySelectorAll('.reveal');
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(entry){
+        if(entry.isIntersecting){
+          entry.target.classList.add('in');
+          io.unobserve(entry.target);
+        }
+      });
+    }, {threshold:0.15});
+    revealEls.forEach(function(el){ io.observe(el); });
+  })();
+</script>
+
+</body>
+</html>
